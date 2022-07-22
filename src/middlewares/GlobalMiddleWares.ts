@@ -40,7 +40,7 @@ export class GlobalMiddleWare {
     } catch (error) {
       res.send({ message: "Middleware not working" });
       req.errorStatus = 401;
-      console.log(error);
+      console.log(error,"error");
       next(error);
     }
   }
