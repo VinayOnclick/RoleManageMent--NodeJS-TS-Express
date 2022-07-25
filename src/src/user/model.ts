@@ -9,7 +9,7 @@ const registerSchema = new mongoose.Schema({
   age: { type: Number, required: true },
   phone: { type: String, required: true },
   address: { type: String, required: true },
-  role:{type:String,enum:["SuperAdmin","Admin","User"]}
+  role:{type:String,default:"",enum:["","Guest","SuperAdmin","Admin","Employee","Manager"]}
 });
 
 export default model("user", registerSchema)

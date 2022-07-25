@@ -53,6 +53,7 @@ export default class userController {
             {
               email: user.email,
               _id: user._id,
+              role:user.role
             },
             process.env.SECRET_KEY
           );

@@ -26,7 +26,7 @@ export class Server {
   ConnectMongoDB() {
     const url = process.env.MONGODB_URL;
     mongoose.connect(url, () => {
-      console.log(`database connected to${url}`);
+      console.log(`database connected to ${url}`);
     });
   }
 

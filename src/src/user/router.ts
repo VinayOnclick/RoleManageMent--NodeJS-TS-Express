@@ -21,18 +21,17 @@ class UserRouter {
   patchRoutes() {
     this.router.patch(
       "/update/:id",
-      GlobalMiddleWare.authenticate,
+      //GlobalMiddleWare.authenticate,
+       GlobalMiddleWare.authorization,
       userController.updateUser
     );
-    this.router.patch(
-      "/assign/:id",
-      userController.assignRole
-    );
+    this.router.patch("/assign/:id", userController.assignRole);
   }
+
   getRoutes() {
     this.router.get(
       "/getAll",
-      GlobalMiddleWare.authenticate,
+      GlobalMiddleWare.authorization,
       userController.findUsers
     );
   }
