@@ -53,7 +53,7 @@ export default class userController {
             {
               email: user.email,
               _id: user._id,
-              role:user.role
+              role: user.role,
             },
             process.env.SECRET_KEY
           );
@@ -78,6 +78,9 @@ export default class userController {
 
   static async updateUser(req: any, res: any) {
     try {
+      const admin=req.Admin
+      console.log(admin)
+      if(admin){
       const _id = req.params.id;
       const { firstName, lastName, email, age, address, phone } = req.body;
       let user = await User.findOne({ _id });
@@ -85,12 +88,14 @@ export default class userController {
       if (!user) {
         res.json({ message: "user not found" });
       } else {
-        const data = await User.updateOne({ _id: _id }, { ...req.body });
+        const data = await User.updateOne({_id: _id }, { ...req.body });
         console.log(data, "vinay bawa");
         return res.json({
           message: "Update SUCCESS",
           data: data,
         });
+      }}else{
+        res.send("no permission allowed until unless ypu became an admin")
       }
     } catch (error) {
       return res.json({
@@ -123,24 +128,22 @@ export default class userController {
   static async assignRole(req: any, res: any) {
     const _id = req.params.id;
     const role = req.body.role;
-      try {
-        let user = await User.findOne({ _id: _id });
+    try {
+      let user = await User.findOne({ _id: _id });
       if (!user) {
-          res.json({ message: "users not found" });
-        }
-         else {
-          const data = await User.findOneAndUpdate({ _id }, { $set: { role } });
-          res.json({
-            message: "Update API SUCCESS",
-            data: data,
-          });
-        }
-      } catch (error) {
-        return res.json({
-          message: "Update API FAILED",
-          data: error,
+        res.json({ message: "users not found" });
+      } else {
+        const data = await User.findOneAndUpdate({ _id }, { $set: { role } });
+        res.json({
+          message: "Update API SUCCESS",
+          data: data,
         });
       }
+    } catch (error) {
+      return res.json({
+        message: "Update API FAILED",
+        data: error,
+      });
     }
-  
+  }
 }

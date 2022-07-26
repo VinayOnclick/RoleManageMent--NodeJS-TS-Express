@@ -61,31 +61,56 @@ export class GlobalMiddleWare {
               req.errorStatus = 401;
               next(new Error("User Not Authorised"));
             } else {
-              req.user = decoded;
               var user = decoded.role;
+              console.log("userRole---->",user);
               switch (user) {
                 case "SuperAdmin":
-              console.log(user);
-
-                  console.log("you will get full access");
+                  req.superAdmin = decoded;
+                  if(req.superAdmin){
+                    console.log(
+                      req.superAdmin,
+                      "============>>,you will get full access"
+                    );
+                  }else{
+                    console.log(
+                      req.superAdmin,
+                      "NOT ALLOWED"
+                    );
+                  }
+                 
                   break;
 
                 case "Admin":
-              console.log(user);
+                  req.Admin = decoded;
 
-                  console.log("you will get half access");
+                  if(req.Admin){
+                    console.log(
+                      req.Admin,
+                      "============>>,you will get mid level access"
+                    );
+                  }else{
+                    console.log(
+                      req.Admin,
+                      "NOT ALLOWED"
+                    );
+                  }
                   break;
 
                 case "Employee":
-              console.log(user);
+                  req.Employee = decoded;
 
-                  console.log("you will get Only workable access");
-                  break;
-
-                case "Manager":
-                  console.log(user);
-
-                  console.log("you will get fullunit level access");
+                  if(req.Employee){
+                    console.log(
+                      req.Employee,
+                      "============>>,you will get full access"
+                    );
+                  }else{
+                    console.log(
+                      req.Employee,
+                      "NOT ALLOWED"
+                    );
+                  }
+              
                   break;
 
                 default:
