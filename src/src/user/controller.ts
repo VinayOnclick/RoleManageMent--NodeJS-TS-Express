@@ -2,39 +2,12 @@ import User from "./model";
 import * as Bcrypt from "bcrypt";
 import * as Jwt from "jsonwebtoken";
 // Add this to the top of the file
-import roles from "../user/role"
 
 
 export default class userController {
-  static grantAccess = function(action, resource) {
-    return async (req, res, next) => {
-     try {
-      const permission = roles.can(req.user.role)[action](resource);
-      if (!permission.granted) {
-       return res.status(401).json({
-        error: "You don't have enough permission to perform this action"
-       });
-      }
-      next()
-     } catch (error) {
-      next(error)
-     }
-    }
-   }
+ 
    
-   static allowIfLoggedin = async (req, res, next) => {
-    try {
-     const user = res.locals.loggedInUser;
-     if (!user)
-      return res.status(401).json({
-       error: "You need to be logged in to access this route"
-      });
-      req.user = user;
-      next();
-     } catch (error) {
-      next(error);
-     }
-   }
+   
 
   static async register(req: any, res: any, next: any) {
     const { firstName, lastName, email, password, age, address, phone } =

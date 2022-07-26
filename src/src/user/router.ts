@@ -1,5 +1,5 @@
 import { Router } from "express";
-import userController from "../../src/user/controller";
+import userController from "./controller";
 import { GlobalMiddleWare } from "../../middlewares/GlobalMiddleWares";
 
 class UserRouter {
@@ -22,8 +22,8 @@ class UserRouter {
     this.router.patch(
       "/update/:id",
       //GlobalMiddleWare.authenticate,
-       GlobalMiddleWare.authenticate,
-      
+      GlobalMiddleWare.authenticate,
+
       userController.updateUser
     );
     this.router.patch("/assign/:id", userController.assignRole);
@@ -33,7 +33,7 @@ class UserRouter {
     this.router.get(
       "/getAll",
       GlobalMiddleWare.authenticate,
-       userController.grantAccess('readAny', 'profile'),
+      GlobalMiddleWare.grantAccess("readAny", "profile"),
 
       userController.findUsers
     );

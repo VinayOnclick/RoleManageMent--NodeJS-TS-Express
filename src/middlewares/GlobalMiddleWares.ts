@@ -2,6 +2,7 @@ import { validationResult } from "express-validator";
 import { verifiedaccess } from "googleapis/build/src/apis/verifiedaccess";
 import * as jwt from "jsonwebtoken";
 import { Error } from "mongoose";
+import roles from "../src/user/role"
 
 export class GlobalMiddleWare {
   static checkError(req, res, next) {
@@ -111,4 +112,21 @@ export class GlobalMiddleWare {
   //     next(error);
   //   }
   // }
+
+
+  static grantAccess = function(action, resource) {
+    return async (req, res, next) => {
+     try {
+      const permission = roles.can(req.user.role)[action](resource);
+      if (!permission.granted) {
+       return res.status(401).json({
+        error: "You don't have enough permission to perform this action"
+       });
+      }
+      next()
+     } catch (error) {
+      next(error)
+     }
+    }
+   }
 }
