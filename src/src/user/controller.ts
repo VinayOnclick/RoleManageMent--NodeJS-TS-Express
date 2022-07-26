@@ -1,8 +1,41 @@
 import User from "./model";
 import * as Bcrypt from "bcrypt";
 import * as Jwt from "jsonwebtoken";
+// Add this to the top of the file
+import roles from "../user/role"
+
 
 export default class userController {
+  static grantAccess = function(action, resource) {
+    return async (req, res, next) => {
+     try {
+      const permission = roles.can(req.user.role)[action](resource);
+      if (!permission.granted) {
+       return res.status(401).json({
+        error: "You don't have enough permission to perform this action"
+       });
+      }
+      next()
+     } catch (error) {
+      next(error)
+     }
+    }
+   }
+   
+   static allowIfLoggedin = async (req, res, next) => {
+    try {
+     const user = res.locals.loggedInUser;
+     if (!user)
+      return res.status(401).json({
+       error: "You need to be logged in to access this route"
+      });
+      req.user = user;
+      next();
+     } catch (error) {
+      next(error);
+     }
+   }
+
   static async register(req: any, res: any, next: any) {
     const { firstName, lastName, email, password, age, address, phone } =
       req.body;
@@ -78,9 +111,9 @@ export default class userController {
 
   static async updateUser(req: any, res: any) {
     try {
-      const admin=req.Admin
-      console.log(admin)
-      if(admin){
+      // const admin=req.Admin
+      // console.log(admin)
+      // if(admin){
       const _id = req.params.id;
       const { firstName, lastName, email, age, address, phone } = req.body;
       let user = await User.findOne({ _id });
@@ -94,9 +127,10 @@ export default class userController {
           message: "Update SUCCESS",
           data: data,
         });
-      }}else{
-        res.send("no permission allowed until unless ypu became an admin")
       }
+    // }else{
+    //     res.send("no permission allowed until unless ypu became an admin")
+    //   }
     } catch (error) {
       return res.json({
         message: "Update FAILED",
