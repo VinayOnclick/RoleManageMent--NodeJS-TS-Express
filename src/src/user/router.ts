@@ -1,7 +1,7 @@
 import { Router } from "express";
 import userController from "./controller";
 import { GlobalMiddleWare } from "../../middlewares/GlobalMiddleWares";
-
+import upload from "../../middlewares/multer";
 class UserRouter {
   public router: Router;
 
@@ -16,6 +16,10 @@ class UserRouter {
   postRoutes() {
     this.router.post("/register", userController.register);
     this.router.post("/login", userController.login);
+    this.router.post("/upload/:id",userController.upload)
+    // this.router.post("/upload1/:id",multer,userController.upload1)
+
+    
   }
 
   patchRoutes() {

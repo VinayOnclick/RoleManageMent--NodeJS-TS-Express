@@ -1,15 +1,9 @@
 import User from "./model";
 import * as Bcrypt from "bcrypt";
 import * as Jwt from "jsonwebtoken";
-// Add this to the top of the file
-
-
+import * as multer from "multer";
 export default class userController {
- 
-   
-   
-
-  static async register(req: any, res: any, next: any) {
+ static async register(req: any, res: any, next: any) {
     const { firstName, lastName, email, password, age, address, phone } =
       req.body;
     console.log(req.body);
@@ -151,6 +145,56 @@ export default class userController {
         message: "Update API FAILED",
         data: error,
       });
+    }
+  }
+
+  static async upload(req, res) {
+//middleware
+    const _id=req.params.id
+    console.log(_id)
+    const storage = multer.diskStorage({
+      destination: `upload/${_id}/image/${_id}`,
+      filename: function (req, file, cb) {
+        cb(null, file.originalname);
+      },
+    });
+  const upload =await multer({ storage: storage }).single("image");
+    try {
+      const image =await User.updateOne({_id},{$set:{
+        image: {
+          data: req.file,
+          contentType: `image/jpg`,
+        },
+      }})
+      console.log(image,"hahaha")
+    return res.json({
+        status: 200,
+        message: "Success",
+   
+      });
+    } catch (error) {
+      console.log(error)
+      console.log("api not working")
+      return res.send("failed");  
+    }
+  }
+
+  static async upload1(req, res) {
+    try {
+      const image = new User({
+        image: {
+          data: req.file.fieldName,
+          contentType: "image/jpg",
+        },
+      });
+      image.save();
+      return res.json({
+        status: 200,
+        message: "Success",
+        data: image,
+      });
+    } catch (error) {
+      return res.send("failed");
     }
   }
 }

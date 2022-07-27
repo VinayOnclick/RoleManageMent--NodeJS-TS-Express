@@ -2,7 +2,6 @@ import * as dotenv from "dotenv";
 
 import * as express from "express";
 import * as mongoose from "mongoose";
-
 import bodyParser = require("body-parser");
 import UserRouter from "./src/user/router";
 
@@ -36,14 +35,16 @@ export class Server {
   }
 
   setRoutes() {
-    this.app.use(UserRouter);
+    this.app.use("/src/uploads", express.static("src/uploads"));
+
+ this.app.use(UserRouter);
   }
 
   error404Handler() {
     this.app.use((req, res) => {
       console.log("error not found 404");
       res.status(404).json({
-        message: "Not Found hah",
+        message: "Not Found",
         Status_code: 404,
       });
     });
