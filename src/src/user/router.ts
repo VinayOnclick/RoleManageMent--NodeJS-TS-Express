@@ -23,7 +23,6 @@ class UserRouter {
       "/update/:id",
       //GlobalMiddleWare.authenticate,
       GlobalMiddleWare.authenticate,
-
       userController.updateUser
     );
     this.router.patch("/assign/:id", userController.assignRole);
@@ -33,8 +32,7 @@ class UserRouter {
     this.router.get(
       "/getAll",
       GlobalMiddleWare.authenticate,
-      GlobalMiddleWare.grantAccess("readAny", "profile"),
-
+     GlobalMiddleWare.grantAccess("readAny", "profile"),
       userController.findUsers
     );
   }

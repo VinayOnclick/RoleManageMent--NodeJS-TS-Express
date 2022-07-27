@@ -114,13 +114,13 @@ export default class userController {
 
   static async findUsers(req: any, res: any) {
     try {
-      let user = await User.findOne({ _id: req.user });
+      let user = await User.find({});
 
       if (!user) {
         res.json({ message: "users not found" });
       } else {
         res.json({
-          message: "Update API SUCCESS",
+          message: "Users Found",
           data: user,
         });
       }

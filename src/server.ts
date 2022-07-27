@@ -4,7 +4,7 @@ import * as express from "express";
 import * as mongoose from "mongoose";
 
 import bodyParser = require("body-parser");
-import UserRouter from "../src/src/user/router";
+import UserRouter from "./src/user/router";
 
 export class Server {
   public app: express.Application = express();
